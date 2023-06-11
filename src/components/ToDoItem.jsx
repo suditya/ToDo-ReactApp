@@ -1,14 +1,16 @@
 import React from 'react'
+import '../styles/ToDoItem.css'
 
-export const TodoItem = ({ props }) => {
+export const TodoItem = ({ task }) => {
     return (
-        <div className="todo-item">
-            {/* <input type="checkbox" checked={true}  /> */}
-            {/* <span className={todo.completed ? 'completed' : ''}>{todo.title}</span> */}
-
-            <span>task :{props}</span> 
-            <button>Delete</button>
-        </div>
+        <div className='container'>
+            <div className="todo-item">
+                <input type="checkbox" className="checkbox" />
+                <span className="task-title">{task}</span>
+                <button className="delete-button" >
+                    Delete
+                </button>
+            </div></div>
     );
 };
 
