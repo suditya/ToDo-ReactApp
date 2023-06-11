@@ -1,22 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
+import TodoItem from './ToDoItem';
 
 export const ToDoList = () => {
-    const [tasks,setTask] = useState(['Eat','Sleep','Code','Exercise','And','Repeat']);
+    const [tasks, setTask] = useState(['Eat', 'Sleep', 'Code', 'Exercise', 'And', 'Repeat']);
     return (
         <div>
-        ToDoList
-        <ul>
-        {tasks.join(', ')}
-            {
-                tasks.map((task)=>
-                {
-                    {/* {task} */}
-                    <li>your task is {task}</li>
-                })
-                
-            }
-        </ul>
+            ToDoList
+            <ul>
+                {tasks.map((task, index) => (
+                    <TodoItem props={task}/>
+                ))}
+            </ul>
         </div>
     )
 }
