@@ -8,7 +8,7 @@ export const ToDoList = () => {
     const titleStyle = {
         fontSize: '40px',
         fontWeight: 'bold',
-        color: '#333',
+        color: 'white',
         textAlign: 'center',
         marginTop: '20px',
         marginBottom: '40px',
@@ -19,7 +19,6 @@ export const ToDoList = () => {
     return (
         <div>
             <h1 style={titleStyle}>Todo App ✅</h1>;
-            <hr></hr>
             <AddTaskRow  tasks={tasks} setTask={setTask}/>
             <ul>
                 {tasks.map((task, index) => (

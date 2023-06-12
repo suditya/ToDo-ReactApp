@@ -1,8 +1,10 @@
-.containerx
+.containerX
 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
 }
 .todo-item {
     width: 70%;
@@ -23,7 +25,21 @@
     font-size: 18px;
     color: black;
   }
-  
+  .edit-button,.done-button
+  {
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border: 0.5px solid black;
+    color: black;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.5s ease;
+  }
+  .edit-button:hover,.done-button:hover {
+    background-color: black;
+    color:white;
+  }
   .delete-button {
     padding: 8px 16px;
     background-color: #ffffff;
@@ -31,7 +47,7 @@
     color: red;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.5s ease;
   }
   
   .delete-button:hover {
