@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../styles/ToDoItem.css'
 
 export const TodoItem = ({ task,tasks, setTask }) => {
+    const [checked, setChecked] = useState(false);
     const deleteTask = () => {
         // tasks=""
         const updatedItems = tasks.filter((t)=>
@@ -14,8 +15,9 @@ export const TodoItem = ({ task,tasks, setTask }) => {
     return (
         <div className='container'>
             <div className="todo-item">
-                <input type="checkbox" className="checkbox" checked={true}/>
-                <span className="task-title">{task}</span>
+                {console.log(task,checked)}
+                <input type="checkbox" className="checkbox" checked={checked} onChange={(e) => setChecked(checked^1)}/>
+                <span className="task-title" style={{ textDecoration : checked ? 'line-through' : 'none' }}>{task}</span>
                 <button className="delete-button" onClick={deleteTask}  >
                     Delete
                 </button>

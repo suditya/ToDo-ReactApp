@@ -6,13 +6,11 @@ import '../styles/AddToDoItem.css';
 const AddTaskRow = ({ tasks, setTask }) => {
 
   const [taskInput, setTaskInput] = useState('');
-  const addTask = (event) => {
-    if(taskInput.length==0) return;
+  const addTask = () => {
+    if (taskInput.length == 0) return;
     const updatedItems = [...tasks, taskInput];
     setTask(updatedItems);
     setTaskInput("")
-    // console.log(event, "event");
-    // console.log(updatedItems, " ", )
   }
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -22,12 +20,12 @@ const AddTaskRow = ({ tasks, setTask }) => {
   return (
 
     <div className='container'>
-      
+
       <div className="add-task-row">
         <input type="text"
           value={taskInput}
-          onChange={(e) => setTaskInput(e.target.value)} 
-          placeholder="Add a task" 
+          onChange={(e) => setTaskInput(e.target.value)}
+          placeholder="Add a task"
           className="task-input"
           onKeyDown={handleKeyDown} />
         <button className="add-button" onClick={addTask} >+</button>
