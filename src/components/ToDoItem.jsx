@@ -19,14 +19,18 @@ export const TodoItem = ({ task, tasks, setTask }) => {
     }
     const handleKeyDown = (e) => {
         if (e.key == "Enter") {
-            // setEdit(false);
+            
             // setTaskInput(e.target.value);
             // task = e.target.value;
+            // console.log(task, e.target, taskInput)
+            // setEdit(false);
+            // chat gpt code
             const updatedTasks = tasks.map((t) => (t === task ? taskInput : t));
             task = taskInput;
-            setTaskInput(updatedTasks);
+            setTaskInput(task);
+            setTask(updatedTasks);
             setEdit(false);
-            // console.log(task, taskInput, tasks, "handle key down ")
+            console.log(task, taskInput, tasks, "handle key down ")
         }
     }
     const check = () => {
