@@ -4,7 +4,7 @@ import TodoItem from './ToDoItem';
 import AddTaskRow  from './AddToDoItem';
 
 export const ToDoList = () => {
-    const [tasks, setTask] = useState(['Add Your Tasks','Repeat']);
+    const [tasks, setTask] = useState(['a','b','c','d','e','f']);
     const titleStyle = {
         fontSize: '40px',
         fontWeight: 'bold',
@@ -22,7 +22,7 @@ export const ToDoList = () => {
             <AddTaskRow  tasks={tasks} setTask={setTask}/>
             <ul>
                 {tasks.map((task, index) => (
-                    <TodoItem task={task} setTask={setTask} tasks={tasks}/>
+                    <TodoItem key={index} task={task} setTask={setTask} tasks={tasks}/>
                 ))}
             </ul>
         </div>

@@ -29,7 +29,9 @@ const AddTaskRow = ({ tasks, setTask }) => {
           className="task-input"
           onKeyDown={handleKeyDown} />
         <button className="add-button" onClick={addTask} >+</button>
-      </div></div>
+      </div>
+
+    </div>
   );
 };
 
