@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    color: white;
+    padding: 10px;
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+  }
+  
+  .right-links {
+    margin-left: auto;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: white;
+    margin-left: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .link:hover {
+    color: red; /* Change to your desired hover color */
+  }
+  
+  .greeting {
+    font-weight: bold;
+  }
+  

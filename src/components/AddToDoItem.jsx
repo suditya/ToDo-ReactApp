@@ -1,21 +1,47 @@
 import React, { useState } from 'react';
 import '../styles/AddToDoItem.css';
+import { addTaskService } from '../services/addTaskService';
 
-const AddTaskRow = ({ tasks, setTask }) => {
+const AddTaskRow = ({ tasks, setTask , getTaskFromDB}) => {
   const [taskInput, setTaskInput] = useState('');
 
-  const addTask = () => {
+  const addTask = async () => {
     if (taskInput.length === 0) return;
 
-    const newTask = {
-      id: tasks.length + 1,
-      title: taskInput,
-      completed: false,
-    };
 
-    const updatedTasks = [...tasks, newTask];
-    setTask(updatedTasks);
-    setTaskInput('');
+    if (localStorage.getItem('userEmail').length > 0) {
+      const newTask = {
+        id: tasks.length + 1,
+        title: taskInput,
+        completed: false,
+        email: localStorage.getItem('userEmail')
+      };
+      // const updatedTasks = [...tasks, newTask];
+      // setTask(updatedTasks);
+      try {
+        // console.log(newTask, " new task adding ")
+        const res = await addTaskService(newTask);
+        
+        
+        await getTaskFromDB();
+        setTaskInput('');
+        // console.log(res, "added the task in DB", tasks, " f->", f);
+      } catch (error) {
+        alert(error.response.data.message);
+      }
+
+    } else {
+      const newTask = {
+        id: tasks.length + 1,
+        title: taskInput,
+        completed: false
+      };
+      const updatedTasks = [...tasks, newTask];
+      setTask(updatedTasks);
+      setTaskInput('');
+    }
+
+
   };
 
   const handleKeyDown = (event) => {

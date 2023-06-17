@@ -1,40 +1,102 @@
 import React, { useState } from 'react';
 import '../styles/ToDoItem.css';
+import { deletedTaskService } from '../services/deleteTask';
+import { editTaskService } from '../services/editTaskService';
 
-export const TodoItem = ({ task, tasks, setTask, completedTasks, setCompletedTasks, remainingTasks, setRemainingTasks }) => {
+export const TodoItem = ({ task, tasks, setTask, getTaskFromDB }) => {
     const [checked, setChecked] = useState(false);
     const [edit, setEdit] = useState(false);
     const [taskInput, setTaskInput] = useState(task.title);
 
-    const deleteTask = (task) => {
-        const updatedItems = tasks.filter((t) => t.id !== task.id);
-        setTask(updatedItems);
+    const deleteTask = async (task) => {
+        if (localStorage.getItem('userEmail').length > 0) {
+            try {
+                const credential =
+                {
+                    title: task.title,
+                    email: localStorage.getItem('userEmail')
+                }
+                console.log(credential, " to be deleted ");
+                const res = await deletedTaskService(credential);
+                await getTaskFromDB();
+
+            } catch (error) {
+                console.log(error, 'error in deleting')
+            }
+        }
+        else {
+            const updatedItems = tasks.filter((t) => t.id !== task.id);
+            setTask(updatedItems);
+        }
+
     };
 
     const editTask = () => {
         setEdit(!edit);
     };
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async (e) => {
         if (e.key === 'Enter') {
-            const updatedTasks = tasks.map((t) =>
-                t.id === task.id ? { ...t, title: taskInput } : t
-            );
+            if (localStorage.getItem('userEmail')) {
+                try {
+                    const credential =
+                    {
+                        id: task.id,
+                        email: localStorage.getItem('userEmail'),
+                        title: taskInput,
+                        completed: task.completed
+                    }
+                    const res = await editTaskService(credential);
+                    console.log(credential, " to be edited ", res);
+                    await getTaskFromDB();
+
+                } catch (error) {
+                    console.log(error, 'error in editing')
+                }
+                setEdit(false);
+            }
+            else {
+                const updatedTasks = tasks.map((t) =>
+                    t.id === task.id ? { ...t, title: taskInput } : t);
+                setTask(updatedTasks);
+                setEdit(false);
+            }
+
             //task = taskInput;
             //setTaskInput(task);
-            setTask(updatedTasks);
-            setEdit(false);
+
         }
     };
 
-    const check = (task) => {
+    const check = async (task) => {
         task.completed = !(task.completed);
-        let updatedTasks = tasks.filter((t) => {
-            return t.id != task.id;
-        })
-        updatedTasks.push(task);
-        setTask(updatedTasks);
-        console.log(updatedTasks, "after checking", tasks);
+        if (localStorage.getItem('userEmail')) {   //logged in 
+            try {
+
+                const credential =
+                {
+                    id: task.id,
+                    email: localStorage.getItem('userEmail'),
+                    title: taskInput,
+                    completed: task.completed
+                }
+                const res = await editTaskService(credential);
+                console.log(credential, " to be edited ", res);
+                await getTaskFromDB();
+
+            } catch (error) {
+                console.log(error, 'error in editing')
+            }
+        }
+        else {
+            let updatedTasks = tasks.filter((t) => {
+                return t.id != task.id;
+            })
+            updatedTasks.push(task);
+            setTask(updatedTasks);
+            console.log(updatedTasks, "after checking", tasks);
+        }
+
     };
 
     return (
@@ -46,7 +108,7 @@ export const TodoItem = ({ task, tasks, setTask, completedTasks, setCompletedTas
                     checked={task.completed}
                     onChange={() => check(task)}
                 />
-                {console.log(task.title, " it is checked :", checked, " ", task.completed)}
+                {console.log(task.title, " it is checked :", checked, " ", task.completed, " task input ", taskInput)}
                 <div className="task-title">
                     {edit ? (
                         <>

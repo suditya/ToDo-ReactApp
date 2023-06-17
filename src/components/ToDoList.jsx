@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoItem from './ToDoItem';
 import AddTaskRow from './AddToDoItem';
+import Navbar from './NavBar';
+import { LoginComponent } from '../components/LoginComponent.jsx';
+import { getTask } from '../services/getTask';
 
 export const ToDoList = () => {
-  const [tasks, setTask] = useState([
-    { id: 1, title: 'Task A', completed: false },
-    { id: 2, title: 'Task B', completed: false },
-    { id: 3, title: 'Task C', completed: false },
-    { id: 4, title: 'Task D', completed: false },
-    { id: 5, title: 'Task E', completed: false },
-    { id: 6, title: 'Task F', completed: false },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('userEmail').length > 0);
+  const [oldIsLoggedIn, setOldIsLoggedIn] = useState(isLoggedIn);
 
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [remainingTasks, setRemainingTasks] = useState(tasks);
+  useEffect(() => {
+    getTaskFromDB();
+  }, isLoggedIn);
+  
+  const getTaskFromDB = async () => {
+    if (localStorage.getItem('userName').length > 0) {
+      try {
+        const res = await getTask(localStorage.getItem('userEmail'));
+        setTasks(res.data);
+      } catch (error) {
+        // console.log(error);
+      }
+    } else {
+      setTasks([{ title: 'login to save and sync your tasks', id: 1, completed: false }]);
+    }
+  };
+  // if (isLoggedIn) {
+  //   getTaskFromDB();
+  // }
 
+  // getTaskFromDB();
   const titleStyle = {
     fontSize: '40px',
     fontWeight: 'bold',
@@ -28,10 +44,10 @@ export const ToDoList = () => {
   };
 
   const handleTaskUpdate = (updatedTasks) => {
-    setTask(updatedTasks);
-    setRemainingTasks(updatedTasks);
+    setTasks(updatedTasks);
   };
-  const sortedTasks = [...remainingTasks, ...completedTasks].sort((a, b) => {
+
+  const sortedTasks = [...tasks].sort((a, b) => {
     if (a.completed && !b.completed) {
       return 1;
     } else if (!a.completed && b.completed) {
@@ -40,10 +56,18 @@ export const ToDoList = () => {
       return 0;
     }
   });
+  if (isLoggedIn !== oldIsLoggedIn) {
+    getTaskFromDB();
+    setOldIsLoggedIn(isLoggedIn);
+  }
+  // console.log(tasks, sortedTasks)
   return (
     <div>
+      <LoginComponent getTaskFromDB={getTaskFromDB} />
+      {/* {console.log("isLoggedIN", isLoggedIn)} */}
+      <Navbar setLoggedIn={setLoggedIn} getTaskFromDB={getTaskFromDB} />
       <h1 style={titleStyle}>Todo App✅</h1>
-      <AddTaskRow tasks={tasks} setTask={handleTaskUpdate} />
+      <AddTaskRow tasks={tasks} setTask={handleTaskUpdate} getTaskFromDB={getTaskFromDB} />
       <ul>
         {sortedTasks.map((task) => (
           <TodoItem
@@ -51,10 +75,7 @@ export const ToDoList = () => {
             task={task}
             tasks={tasks}
             setTask={handleTaskUpdate}
-            completedTasks={completedTasks}
-            setCompletedTasks={setCompletedTasks}
-            remainingTasks={remainingTasks}
-            setRemainingTasks={setRemainingTasks}
+            getTaskFromDB  = {getTaskFromDB}
           />
         ))}
       </ul>
