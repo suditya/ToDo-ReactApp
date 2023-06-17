@@ -9,7 +9,7 @@ export const TodoItem = ({ task, tasks, setTask, getTaskFromDB }) => {
     const [taskInput, setTaskInput] = useState(task.title);
 
     const deleteTask = async (task) => {
-        if (localStorage.getItem('userEmail').length > 0) {
+        if (localStorage.getItem('userEmail')) {
             try {
                 const credential =
                 {

@@ -27,7 +27,7 @@ const Navbar = ({ setLoggedIn, getTaskFromDB }) => {
       </div>
       <div className="nav-links">
         <div className="right-links">
-          {(localStorage.getItem('userName').length > 0) ? (
+          {(localStorage.getItem('userName')) ? (
             <>
               <span className="greeting">Hello, {localStorage.getItem('userName')}!</span>
               <button className="link" onClick={handleLogout}>Logout</button>

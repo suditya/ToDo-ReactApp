@@ -7,15 +7,30 @@ import { getTask } from '../services/getTask';
 
 export const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
-  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('userEmail').length > 0);
+  // const userEmail = localStorage.getItem('userEmail');
+  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('userEmail'));
+
+  // const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('userEmail').length > 0);
   const [oldIsLoggedIn, setOldIsLoggedIn] = useState(isLoggedIn);
 
+  // const updateLogIn = () => {
+  //   try{
+  //     setLoggedIn(localStorage.getItem('userEmail')>0)
+  //   }
+  //   catch(error)
+  //   {
+  //     localStorage.setItem('userEamil','');
+  //     setLoggedIn(false);
+  //   }
+  // }
+
   useEffect(() => {
+    // updateLogIn();
     getTaskFromDB();
   }, isLoggedIn);
-  
+
   const getTaskFromDB = async () => {
-    if (localStorage.getItem('userName').length > 0) {
+    if (localStorage.getItem('userName')) {
       try {
         const res = await getTask(localStorage.getItem('userEmail'));
         setTasks(res.data);
@@ -75,7 +90,7 @@ export const ToDoList = () => {
             task={task}
             tasks={tasks}
             setTask={handleTaskUpdate}
-            getTaskFromDB  = {getTaskFromDB}
+            getTaskFromDB={getTaskFromDB}
           />
         ))}
       </ul>
